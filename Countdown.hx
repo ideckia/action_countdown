@@ -18,6 +18,7 @@ class Countdown extends IdeckiaAction {
 	var timeEreg = ~/([0-9]+)[\s]*(s|m)?/;
 	var timer:haxe.Timer;
 	var initialSeconds:UInt;
+	var initialTime:datetime.DateTime;
 	var time:datetime.DateTime;
 	var isRunning:Bool;
 	var soundPath:String;
@@ -31,8 +32,8 @@ class Countdown extends IdeckiaAction {
 				props.sound_path;
 			}
 			calculateSeconds(props.initial_time).then(seconds -> {
-				time = new datetime.DateTime(0).add(Second(Std.int(seconds)));
-				initialState.text = time.format('%M:%S');
+				initialTime = new datetime.DateTime(0).add(Second(Std.int(seconds)));
+				initialState.text = initialTime.format('%M:%S');
 				initialSeconds = seconds;
 
 				resolve(initialState);
@@ -42,12 +43,13 @@ class Countdown extends IdeckiaAction {
 
 	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
 		return new js.lib.Promise((resolve, reject) -> {
-			if (time == null) {
+			if (initialTime == null) {
 				reject('The given time value ${props.initial_time} is not a valid value.');
 				return;
 			}
 
 			if (timer == null) {
+				time = initialTime;
 				timer = new haxe.Timer(1000);
 				timer.run = () -> {
 					if (!isRunning)
@@ -60,9 +62,12 @@ class Countdown extends IdeckiaAction {
 					if (time.getTime() <= 0) {
 						var initialDt = new datetime.DateTime(0).add(Second(Std.int(initialSeconds)));
 						currentState.text = initialDt.format('%M:%S');
-						server.mediaPlayer.play(soundPath);
-						resolve(currentState);
-						timer.stop();
+						isRunning = false;
+						server.mediaPlayer.play(soundPath, () -> {
+							timer.stop();
+							timer = null;
+							resolve(currentState);
+						});
 					}
 				};
 			}
@@ -77,7 +82,7 @@ class Countdown extends IdeckiaAction {
 				time = time.add(Second(seconds));
 			});
 		} else {
-			time = new datetime.DateTime(0).add(Second(Std.int(initialSeconds)));
+			time = initialTime;
 			currentState.text = time.format('%M:%S');
 		}
 		return super.onLongPress(currentState);
