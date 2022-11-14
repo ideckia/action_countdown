@@ -1,0 +1,8 @@
+--library hxnodejs
+--library ideckia_api
+--library datetime
+--dce full
+-D js-es=6
+Countdown
+
+--js index.js
