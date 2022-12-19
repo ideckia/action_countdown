@@ -56,12 +56,12 @@ class Countdown extends IdeckiaAction {
 						return;
 					time = time.add(Second(-1));
 					server.updateClientState({
-						text: time.format('%M:%S')
+						text: formatTime(time)
 					});
 
 					if (time.getTime() <= 0) {
 						var initialDt = new datetime.DateTime(0).add(Second(Std.int(initialSeconds)));
-						currentState.text = initialDt.format('%M:%S');
+						currentState.text = formatTime(initialDt);
 						isRunning = false;
 						server.mediaPlayer.play(soundPath, () -> {
 							timer.stop();
@@ -74,6 +74,10 @@ class Countdown extends IdeckiaAction {
 
 			isRunning = !isRunning;
 		});
+	}
+
+	inline function formatTime(dt:datetime.DateTime) {
+		return (dt.getHour() > 0) ? dt.format('%H:%M:%S') : dt.format('%M:%S');
 	}
 
 	override public function onLongPress(currentState:ItemState):js.lib.Promise<ItemState> {
