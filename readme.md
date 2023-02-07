@@ -2,20 +2,7 @@
 
 ## Description
 
-Countdown timer
-
-
-
-
-As mentioned before, this uses the custom Countdown Timer plugin. Press the button once and it starts counting down with a little automation. Press within 1.5s and it ads 5 minutes. Press it again and it stops. Press it again within 1.5s and it resets. 
-
-
-https://www.npmjs.com/package/audic
-https://www.npmjs.com/package/@richienb/vlc
-https://www.npmjs.com/package/vlc-static
-
-
-
+Countdown timer.
 
 Sound from: https://soundbible.com/1766-Fire-Pager.html
 
@@ -23,15 +10,17 @@ Sound from: https://soundbible.com/1766-Fire-Pager.html
 
 | Name | Type | Description | Shared | Default | Possible values |
 | ----- |----- | ----- | ----- | ----- | ----- |
-| propertyName | String | Property description | false | "default_value" | ["possible", "values", "for the property"] |
+| initial_time | String | Initial time for the countdown. The unit is definde with the value (s or m). If no unit is provided, default is seconds. Examples: 3s, 15m. | false | "25m" | null |
+| add_time | String | Add this time to the countdown when longpress the button while the timer is running. | false | "5m" | null |
+| sound_path | String | Sound to play when countdown is over. | false | null | null |
 
 ## On single click
 
-TODO
+Starts / pauses the timer
 
 ## On long press
 
-TODO
+If the timer is running when long pressed, it will add `props.add_time` time to the timer. If the timer is paused when long pressed, it will reset to `props.initial_time`.
 
 ## Test the action
 
@@ -51,7 +40,9 @@ node test_action.js
         {
             "name": "countdown",
             "props": {
-                "propertyName": "possible"
+                    "initial_time": "25m",
+                    "add_time": "5m",
+                    "sound_path": "/path/to/sound.wav"
             }
         }
     ]

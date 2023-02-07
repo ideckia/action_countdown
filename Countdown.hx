@@ -6,7 +6,7 @@ typedef Props = {
 	@:editable("Initial time for the countdown. The unit is definde with the value (s or m). If no unit is provided, default is seconds. Examples: 3s, 15m.",
 		"25m")
 	var initial_time:String;
-	@:editable("Add this time to the countdown when longpress the button when running the timer.", '5m')
+	@:editable("Add this time to the countdown when longpress the button while the timer is running.", "5m")
 	var add_time:String;
 	@:editable("Sound to play when countdown is over.")
 	var sound_path:String;
