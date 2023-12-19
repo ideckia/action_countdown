@@ -41,7 +41,7 @@ class Countdown extends IdeckiaAction {
 		});
 	}
 
-	public function execute(currentState:ItemState):js.lib.Promise<ItemState> {
+	public function execute(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		return new js.lib.Promise((resolve, reject) -> {
 			if (initialTime == null) {
 				reject('The given time value ${props.initial_time} is not a valid value.');
@@ -66,7 +66,7 @@ class Countdown extends IdeckiaAction {
 						server.mediaPlayer.play(soundPath, () -> {
 							timer.stop();
 							timer = null;
-							resolve(currentState);
+							resolve(new ActionOutcome({state: currentState}));
 						});
 					}
 				};
@@ -80,7 +80,7 @@ class Countdown extends IdeckiaAction {
 		return (dt.getHour() > 0) ? dt.format('%H:%M:%S') : dt.format('%M:%S');
 	}
 
-	override public function onLongPress(currentState:ItemState):js.lib.Promise<ItemState> {
+	override public function onLongPress(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		if (isRunning) {
 			calculateSeconds(props.add_time).then(seconds -> {
 				time = time.add(Second(seconds));
