@@ -1,0 +1,34 @@
+[
+	{
+		"id": "action_description",
+		"text": "Atzerakontaketan tenporizadorea"
+	},
+	{
+		"id": "prop_initial_time",
+		"text": "Atzerakontakeraren hasierako balioa. Unitatea balioarekin definituko da (s edo m). Ez badago unitaterik, defektuz segunduak hartuko dira. Adibidez: 3s, 15m."
+	},
+	{
+		"id": "prop_add_time",
+		"text": "Klik luzea egitean tenporizadoreari denbora kopuru hau gehitu."
+	},
+	{
+		"id": "prop_sound_path",
+		"text": "Atzerakontaketa bukatzean entzun beharreko soinua."
+	},
+	{
+		"id": "prop_dialog_text",
+		"text": "Atzerakontaketa bukatzean elkarrizketa-leihoan erakusteko testua. Utzi hutsik leihorik ez agertzeko."
+	},
+	{
+		"id": "incorrect_value",
+		"text": "Emandako [{0}] balioa ez da zuzena."
+	},
+	{
+		"id": "end_title",
+		"text": "Atzerakontaketa bukatu da"
+	},
+	{
+		"id": "error_title",
+		"text": "Countdown errorea"
+	}
+]

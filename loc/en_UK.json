@@ -1,0 +1,34 @@
+[
+	{
+		"id": "action_description",
+		"text": "Countdown timer"
+	},
+	{
+		"id": "prop_initial_time",
+		"text": "Initial time for the countdown. The unit is definde with the value (s or m). If no unit is provided, default is seconds. Examples: 3s, 15m."
+	},
+	{
+		"id": "prop_add_time",
+		"text": "Add this time to the countdown when longpress the button while the timer is running."
+	},
+	{
+		"id": "prop_sound_path",
+		"text": "Sound to play when countdown is over."
+	},
+	{
+		"id": "prop_dialog_text",
+		"text": "Text to show in the dialog when the countdown hits 0. Leave it blank to not to show any dialog."
+	},
+	{
+		"id": "incorrect_value",
+		"text": "The given time value [{0}] is not a valid value."
+	},
+	{
+		"id": "end_title",
+		"text": "Countdown is over"
+	},
+	{
+		"id": "error_title",
+		"text": "Countdown error"
+	}
+]

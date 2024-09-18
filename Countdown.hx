@@ -3,17 +3,19 @@ package;
 using api.IdeckiaApi;
 
 typedef Props = {
-	@:editable("Initial time for the countdown. The unit is definde with the value (s or m). If no unit is provided, default is seconds. Examples: 3s, 15m.",
-		"25m")
+	@:editable("prop_initial_time", "25m")
 	var initial_time:String;
-	@:editable("Add this time to the countdown when longpress the button while the timer is running.", "5m")
+	@:editable("prop_add_time", "5m")
 	var add_time:String;
-	@:editable("Sound to play when countdown is over.")
+	@:editable("prop_sound_path")
 	var sound_path:String;
+	@:editable("prop_dialog_text")
+	var dialog_text:String;
 }
 
 @:name("countdown")
-@:description("Countdown timer")
+@:description("action_description")
+@:localize
 class Countdown extends IdeckiaAction {
 	var timeEreg = ~/([0-9]+)[\s]*(s|m)?/;
 	var timer:haxe.Timer;
@@ -44,7 +46,7 @@ class Countdown extends IdeckiaAction {
 	public function execute(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		return new js.lib.Promise((resolve, reject) -> {
 			if (initialTime == null) {
-				reject('The given time value ${props.initial_time} is not a valid value.');
+				reject(Loc.incorrect_value.tr([props.initial_time]));
 				return;
 			}
 
@@ -55,7 +57,7 @@ class Countdown extends IdeckiaAction {
 					if (!isRunning)
 						return;
 					time = time.add(Second(-1));
-					server.updateClientState({
+					core.updateClientState({
 						text: formatTime(time)
 					});
 
@@ -63,11 +65,13 @@ class Countdown extends IdeckiaAction {
 						var initialDt = new datetime.DateTime(0).add(Second(Std.int(initialSeconds)));
 						currentState.text = formatTime(initialDt);
 						isRunning = false;
-						server.mediaPlayer.play(soundPath, () -> {
+						core.mediaPlayer.play(soundPath, () -> {
 							timer.stop();
 							timer = null;
 							resolve(new ActionOutcome({state: currentState}));
 						});
+						if (props.dialog_text != null && props.dialog_text != '')
+							core.dialog.info(Loc.end_title.tr(), props.dialog_text);
 					}
 				};
 			}
@@ -95,7 +99,7 @@ class Countdown extends IdeckiaAction {
 	function calculateSeconds(timeString):js.lib.Promise<UInt> {
 		return new js.lib.Promise((resolve, reject) -> {
 			if (timeString == null || Std.parseInt(timeString) == null || !timeEreg.match(timeString)) {
-				server.dialog.error('Wait error', 'The given time value $timeString is not a valid value.');
+				core.dialog.error(Loc.error_title.tr(), Loc.incorrect_value.tr([timeString]));
 			} else {
 				var timeValue = Std.parseInt(timeEreg.matched(1));
 				var timeUnit:TimeUnit = timeEreg.matched(2);
