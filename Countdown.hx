@@ -43,6 +43,12 @@ class Countdown extends IdeckiaAction {
 		});
 	}
 
+	override function deinit() {
+		if (timer != null)
+			timer.stop();
+		timer = null;
+	}
+
 	public function execute(currentState:ItemState):js.lib.Promise<ActionOutcome> {
 		return new js.lib.Promise((resolve, reject) -> {
 			if (initialTime == null) {
